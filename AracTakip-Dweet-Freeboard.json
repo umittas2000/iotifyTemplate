@@ -1,0 +1,33 @@
+{
+  "name": "AracTakip-Dweet-Freeboard",
+  "type": "network",
+  "json": {
+    "name": "AracTakip-Dweet-Freeboard",
+    "message": "{state.location=drive({start:state.baslangic,end:state.bitis,speed:600});state.yakit-=chance.integer({min:1,max:6,delta:3});state.hiz1+=chance.integer({min:-5,max:5});state.sicaklik=weather.temperature({location:state.location,unit:\"c\"});if(state.yakit<=5){state.depodoldur++;state.yakit=100}let veriblogu={engine:\"on\",yakit:state.yakit,hiz1:state.hiz,arac:client(),serino:state.serino,plaka:state.plaka,depodoldur:state.depodoldur,sicaklik:state.sicaklik,latitude:state.location.latitude,longitude:state.location.longitude};return JSON.stringify(veriblogu)}",
+    "messageString": "{\n//Yolculuga basla\n    state.location =  drive({start: state.baslangic, end: state.bitis,speed :600});\n\n/*\n//Gidilen Mesafe bilgisini yakala\n    if (state.location)\n    {\n        state.kilometre += geolib.getDistance(\n          { latitude: location.latitude, longitude: location.longitude },\n          { latitude: state.location.latitude, longitude: state.location.longitude }\n        );\n    }\n*/\n//Her iterasyonda Yakit harca, onceki degerden max. 5 fark olsun\nstate.yakit-=chance.integer({min: 1, max:6, delta:3});\n\n//Her iterasyonda hiz belirle\nstate.hiz1+=chance.integer({min: -5, max:5});\n\n//Hava sicakligini kontrol et\nstate.sicaklik=weather.temperature({location: state.location, unit: 'c'});\nif(state.yakit<=5){\n    state.depodoldur++;\n    state.yakit=100;\n}\n//Motor durum bilgisini guncelle\nlet veriblogu=({\n        engine: \"on\",\n        yakit: state.yakit,\n        hiz1: state.hiz,\n        arac: client(),\n        serino:state.serino,\n        plaka:state.plaka,\n        depodoldur:state.depodoldur,\n       // kilometre: state.kilometre,\n        sicaklik:state.sicaklik,\n        latitude: state.location.latitude,\n        longitude: state.location.longitude\n            \n        });\n\n//payload degerini JSON olarak dondur , Bu veriyi diger platformlardan yakalayip inceleyecegiz\n    return JSON.stringify(veriblogu);\n}",
+    "options": {
+      "username": "",
+      "password": "",
+      "key": "",
+      "cert": "",
+      "ca": "",
+      "rejectUnauthorized": true,
+      "method": "POST",
+      "headers": {},
+      "timeout": 10000,
+      "useQuerystring": false
+    },
+    "custom": {
+      "init": "{state.plaka=\"06 \"+chance.string({length:2,pool:\"ABCDEFGHIJKLMNOPRSTUVYZ\"})+\" \"+chance.string({length:3,pool:\"0123456789\"});state.teker1basinc=38;state.teker2basinc=38;state.teker3basinc=38;state.teker4basinc=38;state.sicaklik=25;state.serino=chance.string({length:10,casing:\"upper\",alpha:true,numeric:true});state.yakit=glob.get(client()+\"_yakitbilgisi\");if(!state.yakit)state.yakit=100;state.baslangic=glob.get(\"arac_\"+client()+\"_baslangic\");state.bitis=glob.get(\"Gazi_BE_Binasi\");if(!state.baslangic)state.baslangic=glob.get(\"cigerci_bahattin\");state.hiz=100;state.depodoldur=1}",
+      "initString": "{\n  \n// Rastgele Plaka olustur\n    state.plaka = '06 '+\n    chance.string({length: 2, pool: 'ABCDEFGHIJKLMNOPRSTUVYZ'})\n    +' '+\n    chance.string({length: 3, pool: '0123456789'});\n    \n//Aracin tekerlek hava basinci bilgisi, bunu yoldayken takip edecegiz.\n    state.teker1basinc = 38;\n    state.teker2basinc = 38;\n    state.teker3basinc = 38;\n    state.teker4basinc = 38;\n\n//hava sicakligi bilgisi\n    state.sicaklik = 25;\n    \n// Rastgele arac serinumarasi olustur\n    state.serino = chance.string({length: 10, casing: 'upper', alpha: true, numeric: true}); \n\n//Yakit bilgisini veritabanindan oku, eger bilgi yoksa depoyu fulle\n    state.yakit=glob.get(client()+'_yakitbilgisi');\n    if (!state.yakit) state.yakit = 100;\n    \n//ilgili aracin baslangic koordinatini veritabanindan al\n    state.baslangic=glob.get('arac_'+client()+'_baslangic');\n    state.bitis=glob.get('Gazi_BE_Binasi');\n//bir koordinat uydur ya da veritabanindan birtane oku\n    if(!state.baslangic) state.baslangic=glob.get('cigerci_bahattin');\n    \n//Arac hizini tanimla:\nstate.hiz=100;\n\n//depo doldurma sayisini tut. \nstate.depodoldur=1;\n    \n}\n",
+      "finish": "{}",
+      "finishString": "{\n  //passed parameters to this function are:   \n  //state: current object state, passed as reference   \n    \n    \n  //no need for return \n}\n"
+    },
+    "simulation_id": "AracTakip-Dweet-Freeboard-umit-tas",
+    "protocol": "http",
+    "transport": "http",
+    "host": "dweet.io",
+    "endpoint": "http://dweet.io",
+    "url": "/dweet/for/umittas2000"
+  }
+}
